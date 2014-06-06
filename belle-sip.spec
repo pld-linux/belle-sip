@@ -7,7 +7,7 @@ Summary:	SIP (RFC3261) object-oriented implementation in C
 Summary(pl.UTF-8):	Implementacja SIP (RFC3261) w C
 Name:		belle-sip
 Version:	1.3.0
-Release:	0.1
+Release:	1
 License:	GPL v2
 Group:		Libraries
 Source0:	http://download-mirror.savannah.gnu.org/releases/linphone/belle-sip/%{name}-%{version}.tar.gz
