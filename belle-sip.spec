@@ -13,6 +13,7 @@ Group:		Libraries
 Source0:	http://download-mirror.savannah.gnu.org/releases/linphone/belle-sip/%{name}-%{version}.tar.gz
 # Source0-md5:	ae9e8be12f62552a5376edd66b0265d9
 Patch0:		antlr_jar.patch
+Patch1:		use_after_free.patch
 URL:		http://www.linphone.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
 BuildRequires:	autoconf >= 2.63
@@ -61,6 +62,7 @@ Statyczna biblioteka %{name}.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
