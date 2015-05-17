@@ -1,3 +1,4 @@
+# TODO: tunnel? (BR: pkgconfig(tunnel))
 #
 # Conditional build:
 %bcond_without	static_libs	# don't build static libraries
@@ -6,21 +7,20 @@
 Summary:	SIP (RFC3261) object-oriented implementation in C
 Summary(pl.UTF-8):	Implementacja SIP (RFC3261) w C
 Name:		belle-sip
-Version:	1.3.0
-Release:	3
+Version:	1.4.1
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://download-mirror.savannah.gnu.org/releases/linphone/belle-sip/%{name}-%{version}.tar.gz
-# Source0-md5:	ae9e8be12f62552a5376edd66b0265d9
+# Source0-md5:	c6460e294e77bd0646b7eda7fbe21523
 Patch0:		antlr_jar.patch
-Patch1:		use_after_free.patch
 URL:		http://www.linphone.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	java-antlr3 >= 3.2
 BuildRequires:	jre
-BuildRequires:	libantlr3c-devel >= 3.2
+BuildRequires:	libantlr3c-devel >= 3.4
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:2
 BuildRequires:	polarssl-devel >= 1.2
@@ -62,7 +62,6 @@ Statyczna biblioteka %{name}.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
