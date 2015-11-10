@@ -1,3 +1,4 @@
+# TODO: switch to mbledtls when 2.x is supported (mbed_ssl_init instead of ssl_init)
 # TODO: tunnel? (BR: pkgconfig(tunnel))
 #
 # Conditional build:
@@ -7,12 +8,12 @@
 Summary:	SIP (RFC3261) object-oriented implementation in C
 Summary(pl.UTF-8):	Implementacja SIP (RFC3261) w C
 Name:		belle-sip
-Version:	1.4.1
+Version:	1.4.2
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://download-mirror.savannah.gnu.org/releases/linphone/belle-sip/%{name}-%{version}.tar.gz
-# Source0-md5:	c6460e294e77bd0646b7eda7fbe21523
+# Source0-md5:	dbb58649225adefbad87241141fbea93
 Patch0:		antlr_jar.patch
 URL:		http://www.linphone.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
