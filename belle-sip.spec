@@ -8,13 +8,14 @@
 Summary:	SIP (RFC3261) object-oriented implementation in C
 Summary(pl.UTF-8):	Implementacja SIP (RFC3261) w C
 Name:		belle-sip
-Version:	1.4.2
+Version:	1.6.3
 Release:	1
 License:	GPL v2+
 Group:		Libraries
-Source0:	http://download-mirror.savannah.gnu.org/releases/linphone/belle-sip/%{name}-%{version}.tar.gz
-# Source0-md5:	dbb58649225adefbad87241141fbea93
+Source0:	https://linphone.org/releases/sources/belle-sip/%{name}-%{version}.tar.gz
+# Source0-md5:	90c40812d98671ad2f40621542500bc6
 Patch0:		antlr_jar.patch
+Patch1:		build.patch
 URL:		http://www.linphone.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
 BuildRequires:	autoconf >= 2.63
@@ -61,8 +62,9 @@ Static %{name} library.
 Statyczna biblioteka %{name}.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}-0
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -71,7 +73,7 @@ Statyczna biblioteka %{name}.
 %{__autoheader}
 %{__automake}
 %configure \
-	CFLAGS="%{rpmcflags} -Wno-error=pragmas" \
+	CFLAGS="%{rpmcflags} -Wno-error=pragmas -Wno-error=cast-function-type -Wno-implicit-fallthrough -Wno-error=array-bounds" \
 	--disable-silent-rules \
 	%{!?with_static_libs:--disable-static}
 
@@ -95,7 +97,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS README
+%doc AUTHORS NEWS README.md
 %attr(755,root,root) %{_libdir}/libbellesip.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libbellesip.so.0
 
