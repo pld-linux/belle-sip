@@ -1,8 +1,7 @@
-# TODO: switch to mbledtls when 2.x is supported (mbed_ssl_init instead of ssl_init)
-# TODO: tunnel? (BR: pkgconfig(tunnel))
+# TODO: tunnel? (BR: pkgconfig(tunnel) or TunnelConfig.cmake)
 #
 # Conditional build:
-%bcond_without	static_libs	# don't build static libraries
+%bcond_without	static_libs	# static library
 %bcond_with	tests		# enable tests
 #
 Summary:	SIP (RFC3261) object-oriented implementation in C
@@ -20,13 +19,17 @@ URL:		http://www.linphone.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
 BuildRequires:	autoconf >= 2.63
 BuildRequires:	automake >= 1:1.11
+BuildRequires:	bctoolbox-devel >= 0.5.0
 BuildRequires:	java-antlr3 >= 3.2
 BuildRequires:	jre
 BuildRequires:	libantlr3c-devel >= 3.4
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:2
-BuildRequires:	polarssl-devel >= 1.2
 BuildRequires:	pkgconfig
+BuildRequires:	zlib-devel >= 1.2.3
+Requires:	bctoolbox >= 0.5.0
+Requires:	libantlr3c >= 3.4
+Requires:	zlib >= 1.2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -42,6 +45,8 @@ Summary:	Header files for %{name} library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki %{name}
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	bctoolbox-devel >= 0.5.0
+Requires:	libantlr3c-devel >= 3.4
 
 %description devel
 Header files for %{name} library.
@@ -68,12 +73,16 @@ Statyczna biblioteka %{name}.
 
 %build
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
+WARNFLAGS="-Wno-error=pragmas -Wno-error=array-bounds"
+%if "%{cc_version}" >= "7"
+WARNFLAGS="$WARNFLAGS -Wno-implicit-fallthrough -Wno-error=cast-function-type"
+%endif
 %configure \
-	CFLAGS="%{rpmcflags} -Wno-error=pragmas -Wno-error=cast-function-type -Wno-implicit-fallthrough -Wno-error=array-bounds" \
+	CFLAGS="%{rpmcflags} $WARNFLAGS" \
 	--disable-silent-rules \
 	%{!?with_static_libs:--disable-static}
 
@@ -104,8 +113,8 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libbellesip.so
-%{_includedir}/%{name}
-%{_pkgconfigdir}/%{name}.pc
+%{_includedir}/belle-sip
+%{_pkgconfigdir}/belle-sip.pc
 
 %if %{with static_libs}
 %files static
