@@ -1,0 +1,13 @@
+--- belle-sip-4.5.20/CMakeLists.txt.orig	2021-06-10 15:00:24.000000000 +0200
++++ belle-sip-4.5.20/CMakeLists.txt	2021-06-18 06:37:40.200216048 +0200
+@@ -131,8 +131,8 @@
+ 
+ 
+ set(prefix ${CMAKE_INSTALL_PREFIX})
+-set(exec_prefix ${prefix}/${CMAKE_INSTALL_BINDIR})
+-set(libdir ${prefix}/${CMAKE_INSTALL_LIBDIR})
++set(exec_prefix ${prefix})
++set(libdir ${prefix}/lib${LIB_SUFFIX})
+ set(includedir ${prefix}/include)
+ 
+ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/belle-sip.pc.in ${CMAKE_CURRENT_BINARY_DIR}/belle-sip.pc)
