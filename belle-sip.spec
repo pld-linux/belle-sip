@@ -9,7 +9,7 @@ Summary:	SIP (RFC3261) object-oriented implementation in C
 Summary(pl.UTF-8):	Implementacja SIP (RFC3261) w C
 Name:		belle-sip
 Version:	4.5.20
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 #Source0Download: https://gitlab.linphone.org/BC/public/belle-sip/-/tags
@@ -89,6 +89,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} -C builddir install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+# disable completeness check incompatible with split packaging
+%{__sed} -i -e '/^foreach(target .*IMPORT_CHECK_TARGETS/,/^endforeach/d; /^unset(_IMPORT_CHECK_TARGETS)/d' $RPM_BUILD_ROOT%{_libdir}/cmake/BelleSIP/BelleSIPTargets.cmake
 
 %clean
 rm -rf $RPM_BUILD_ROOT
