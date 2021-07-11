@@ -17,7 +17,7 @@ Source0:	https://gitlab.linphone.org/BC/public/belle-sip/-/archive/%{version}/%{
 # Source0-md5:	57b680975c7c78955bc06b5331f651bf
 Patch0:		antlr_jar.patch
 Patch1:		%{name}-pc.patch
-URL:		http://www.linphone.org/
+URL:		http://www.linphone.org/technical-corner/belle-sip
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
 BuildRequires:	bctoolbox-devel >= 0.5.0
 BuildRequires:	cmake >= 3.1
