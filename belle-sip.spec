@@ -8,17 +8,19 @@
 Summary:	SIP (RFC3261) object-oriented implementation in C
 Summary(pl.UTF-8):	Implementacja SIP (RFC3261) w C
 Name:		belle-sip
-Version:	4.5.20
-Release:	2
-License:	GPL v2+
+Version:	5.2.51
+Release:	1
+License:	GPL v3+
 Group:		Libraries
 #Source0Download: https://gitlab.linphone.org/BC/public/belle-sip/-/tags
 Source0:	https://gitlab.linphone.org/BC/public/belle-sip/-/archive/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	57b680975c7c78955bc06b5331f651bf
+# Source0-md5:	b4bcdbcb0e641cef2e1e5ecec889c9b5
 Patch0:		antlr_jar.patch
 Patch1:		%{name}-pc.patch
+Patch2:		%{name}-mbedtlsv3.patch
 URL:		http://www.linphone.org/technical-corner/belle-sip
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
+%{?with_dnssd:BuildRequires:	avahi-compat-libdns_sd-devel}
 BuildRequires:	bctoolbox-devel >= 0.5.0
 BuildRequires:	cmake >= 3.1
 BuildRequires:	java-antlr3 >= 3.2
@@ -71,6 +73,7 @@ Statyczna biblioteka %{name}.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 install -d builddir
@@ -103,6 +106,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS.md CHANGELOG.md README.md
 %attr(755,root,root) %{_libdir}/libbellesip.so.1
+%{_datadir}/belr/grammars/sdp_grammar
 
 %files devel
 %defattr(644,root,root,755)
