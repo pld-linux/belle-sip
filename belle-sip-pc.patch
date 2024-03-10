@@ -11,3 +11,13 @@
  set(includedir ${prefix}/include)
  
  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/belle-sip.pc.in ${CMAKE_CURRENT_BINARY_DIR}/belle-sip.pc)
+--- belle-sip-5.3.29/belle-sip.pc.in.orig	2023-12-22 14:56:42.000000000 +0100
++++ belle-sip-5.3.29/belle-sip.pc.in	2024-03-10 10:17:27.350699733 +0100
+@@ -8,6 +8,6 @@ Description: A c based implementation of
+ Requires: bctoolbox
+ Requires.private: @REQUIRES_PRIVATE@ @TLS_PC@
+ Version: @VERSION@
+-Libs: -L@libdir@ -lbellesip
++Libs: -L@libdir@ -lbelle-sip
+ Libs.private: @LIBS_PRIVATE@
+ Cflags: -I@includedir@ 

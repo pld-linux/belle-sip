@@ -1,4 +1,4 @@
-# TODO: tunnel? (BR: pkgconfig(tunnel) or TunnelConfig.cmake)
+# TODO: tunnel >= 0.7.0? (BR: pkgconfig(tunnel) or TunnelConfig.cmake)
 #
 # Conditional build:
 %bcond_without	dnssd		# MDNS/DNSSD support
@@ -8,21 +8,21 @@
 Summary:	SIP (RFC3261) object-oriented implementation in C
 Summary(pl.UTF-8):	Implementacja SIP (RFC3261) w C
 Name:		belle-sip
-Version:	5.2.51
+Version:	5.3.29
 Release:	1
 License:	GPL v3+
 Group:		Libraries
 #Source0Download: https://gitlab.linphone.org/BC/public/belle-sip/-/tags
 Source0:	https://gitlab.linphone.org/BC/public/belle-sip/-/archive/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	b4bcdbcb0e641cef2e1e5ecec889c9b5
+# Source0-md5:	6282d86a629f9d5aede25534bd9bcf87
 Patch0:		antlr_jar.patch
 Patch1:		%{name}-pc.patch
-Patch2:		%{name}-mbedtlsv3.patch
-URL:		http://www.linphone.org/technical-corner/belle-sip
+URL:		https://www.linphone.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
 %{?with_dnssd:BuildRequires:	avahi-compat-libdns_sd-devel}
-BuildRequires:	bctoolbox-devel >= 0.5.0
-BuildRequires:	cmake >= 3.1
+BuildRequires:	bctoolbox-devel >= 5.3.0
+BuildRequires:	belr-devel >= 5.3.0
+BuildRequires:	cmake >= 3.22
 BuildRequires:	java-antlr3 >= 3.2
 BuildRequires:	jre
 BuildRequires:	libantlr3c-devel >= 3.4
@@ -30,7 +30,8 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRequires:	zlib-devel >= 1.2.3
-Requires:	bctoolbox >= 0.5.0
+Requires:	bctoolbox >= 5.3.0
+Requires:	belr >= 5.3.0
 Requires:	libantlr3c >= 3.4
 Requires:	zlib >= 1.2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -48,7 +49,8 @@ Summary:	Header files for %{name} library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki %{name}
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	bctoolbox-devel >= 0.5.0
+Requires:	bctoolbox-devel >= 5.3.0
+Requires:	belr-devel >= 5.3.0
 Requires:	libantlr3c-devel >= 3.4
 
 %description devel
@@ -73,28 +75,38 @@ Statyczna biblioteka %{name}.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
-install -d builddir
-cd builddir
-%cmake .. \
+%if %{with static_libs}
+%cmake -B builddir-static \
+	-DBUILD_SHARED_LIBS=OFF \
+	%{?with_dnssd:-DENABLE_MDNS=ON} \
+	-DENABLE_UNIT_TESTS=OFF
+
+%{__make} -C builddir-static
+%endif
+
+%cmake -B builddir \
 	%{?with_dnssd:-DENABLE_MDNS=ON} \
 	%{!?with_static_libs:-DENABLE_STATIC=OFF} \
-	%{!?with_tests:-DENABLE_TESTS=OFF}
+	%{!?with_tests:-DENABLE_UNIT_TESTS=OFF}
 
-%{__make}
+%{__make} -C builddir
 
-%{?with_tests:%{__make} test}
+%if %{with tests}
+%{__make} -C builddir test
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
+%if %{with static_libs}
+%{__make} -C builddir-static install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
 %{__make} -C builddir install \
 	DESTDIR=$RPM_BUILD_ROOT
-
-# disable completeness check incompatible with split packaging
-%{__sed} -i -e '/^foreach(target .*IMPORT_CHECK_TARGETS/,/^endforeach/d; /^unset(_IMPORT_CHECK_TARGETS)/d' $RPM_BUILD_ROOT%{_libdir}/cmake/BelleSIP/BelleSIPTargets.cmake
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -105,12 +117,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS.md CHANGELOG.md README.md
-%attr(755,root,root) %{_libdir}/libbellesip.so.1
+%attr(755,root,root) %{_libdir}/libbelle-sip.so.1
 %{_datadir}/belr/grammars/sdp_grammar
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libbellesip.so
+%attr(755,root,root) %{_libdir}/libbelle-sip.so
 %{_includedir}/belle-sip
 %{_pkgconfigdir}/belle-sip.pc
 %{_libdir}/cmake/BelleSIP
@@ -118,5 +130,5 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/libbellesip.a
+%{_libdir}/libbelle-sip.a
 %endif
