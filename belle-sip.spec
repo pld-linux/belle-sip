@@ -8,14 +8,13 @@
 Summary:	SIP (RFC3261) object-oriented implementation in C
 Summary(pl.UTF-8):	Implementacja SIP (RFC3261) w C
 Name:		belle-sip
-Version:	5.3.29
+Version:	5.3.104
 Release:	1
 License:	GPL v3+
 Group:		Libraries
 #Source0Download: https://gitlab.linphone.org/BC/public/belle-sip/-/tags
 Source0:	https://gitlab.linphone.org/BC/public/belle-sip/-/archive/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	6282d86a629f9d5aede25534bd9bcf87
-Patch0:		antlr_jar.patch
+# Source0-md5:	84a609a65d7fd7891172b4826948dd2f
 Patch1:		%{name}-pc.patch
 URL:		https://www.linphone.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
@@ -23,7 +22,6 @@ URL:		https://www.linphone.org/
 BuildRequires:	bctoolbox-devel >= 5.3.0
 BuildRequires:	belr-devel >= 5.3.0
 BuildRequires:	cmake >= 3.22
-BuildRequires:	java-antlr3 >= 3.2
 BuildRequires:	jre
 BuildRequires:	libantlr3c-devel >= 3.4
 BuildRequires:	libstdc++-devel
@@ -73,8 +71,7 @@ Statyczna biblioteka %{name}.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
+%patch -P 1 -p1
 
 %build
 %if %{with static_libs}
@@ -94,7 +91,7 @@ Statyczna biblioteka %{name}.
 %{__make} -C builddir
 
 %if %{with tests}
-%{__make} -C builddir test
+%{__make} -C builddir test ARGS=--output-on-failure
 %endif
 
 %install
