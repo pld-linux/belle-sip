@@ -8,13 +8,13 @@
 Summary:	SIP (RFC3261) object-oriented implementation in C
 Summary(pl.UTF-8):	Implementacja SIP (RFC3261) w C
 Name:		belle-sip
-Version:	5.3.104
+Version:	5.4.17
 Release:	1
 License:	GPL v3+
 Group:		Libraries
 #Source0Download: https://gitlab.linphone.org/BC/public/belle-sip/-/tags
 Source0:	https://gitlab.linphone.org/BC/public/belle-sip/-/archive/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	84a609a65d7fd7891172b4826948dd2f
+# Source0-md5:	c49ff21809abdfc5b15317b60f5e8758
 Patch1:		%{name}-pc.patch
 URL:		https://www.linphone.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
@@ -115,7 +115,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS.md CHANGELOG.md README.md
 %attr(755,root,root) %{_libdir}/libbelle-sip.so.1
-%{_datadir}/belr/grammars/sdp_grammar
+%{_datadir}/belr/grammars/sdp_grammar.belr
+%{_datadir}/belr/grammars/sip_grammar.belr
 
 %files devel
 %defattr(644,root,root,755)
