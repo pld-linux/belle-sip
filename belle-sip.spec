@@ -8,13 +8,13 @@
 Summary:	SIP (RFC3261) object-oriented implementation in C
 Summary(pl.UTF-8):	Implementacja SIP (RFC3261) w C
 Name:		belle-sip
-Version:	5.4.17
+Version:	5.4.38
 Release:	1
 License:	GPL v3+
 Group:		Libraries
 #Source0Download: https://gitlab.linphone.org/BC/public/belle-sip/-/tags
 Source0:	https://gitlab.linphone.org/BC/public/belle-sip/-/archive/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	c49ff21809abdfc5b15317b60f5e8758
+# Source0-md5:	cc4957ae77005c40bca0b98960cd7ba5
 Patch1:		%{name}-pc.patch
 URL:		https://www.linphone.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.0}
@@ -71,7 +71,7 @@ Statyczna biblioteka %{name}.
 
 %prep
 %setup -q
-%patch -P 1 -p1
+%patch -P1 -p1
 
 %build
 %if %{with static_libs}
